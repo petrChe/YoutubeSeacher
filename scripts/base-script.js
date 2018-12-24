@@ -24,6 +24,8 @@ var loadFiveVideos = function(nextPageToken, needNewFiveVideos) {
         nextPageToken = "";
         while(parentContainer.firstChild){
             parentContainer.removeChild(parentContainer.firstChild);
+            spliceCounter = 0;
+            moreVideosButton.style.display = "block";
         }
     }
 
@@ -66,7 +68,8 @@ function collectVideosForGallery(results){
             id: index,
             videoTitle: element.snippet.title,
             videoDescription: element.snippet.description,
-            videoPreviewPicUrl: element.snippet.thumbnails.medium.url
+            videoPreviewPicUrl: element.snippet.thumbnails.medium.url,
+            videoId: element.id.videoId
         };
 
         vidosFromSearchingData.push(video); 
@@ -91,29 +94,45 @@ function createVideoGallery(videos)
         titleElement.className = "video-title";
         titleElement.innerText = video.videoTitle;
 
-        var videoElement = document.createElement("video");
+        /*var videoElement = document.createElement("video");
         videoElement.width = 300;
         videoElement.height = 200;
         videoElement.controls = true;
         videoElement.preload = "auto";
         videoElement.poster = video.videoPreviewPicUrl;
 
+        var videoSourceElement = document.createElement("source");
+        videoSourceElement.src = "https://www.youtube.com/embed/tgbNymZ7vqY?controls=0";
+        videoSourceElement.type = "video/mp4";
+
+        videoElement.appendChild(videoSourceElement);*/
+
+        var iframeElement = document.createElement("iframe");
+        iframeElement.width = 300;
+        iframeElement.height = 200;
+        iframeElement.src = "http://www.youtube.com/embed/" + video.videoId;
+        iframeElement.frameBorder = 0;
+        iframeElement.allowFullscreen = true;
+
         var descriptionElement = document.createElement("p");
         descriptionElement.className = "video-description";
         descriptionElement.innerText = video.videoDescription;
 
         videoDiv.appendChild(titleElement);
-        videoDiv.appendChild(videoElement);
+        videoDiv.appendChild(iframeElement);
         videoDiv.appendChild(descriptionElement);
         parentContainer.appendChild(videoDiv);
     });
 }
 
-
 function loadMoreVideos() {
 
     var videoGalleryRowCount = parentContainer.childElementCount;
 
+    if(videoGalleryRowCount == 0) {
+        return;
+    }
+    
     if(videoGalleryRowCount >= 10) {
         moreVideosButton.style.display = "none";
     }
