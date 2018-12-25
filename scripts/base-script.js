@@ -6,9 +6,31 @@ const part = "snippet";
 var vidosFromSearchingData = [];
 var nextPageToken = "";
 var parentContainer = document.getElementsByClassName("row")[0];
+var noVideosLabel = document.getElementById("noVideosLabel");
 var moreVideosButton = document.getElementsByClassName("more-videos-btn")[0];
+var queryText = document.getElementById("searchInput");
 
+var searchForm = document.getElementById("searchForm");
+searchForm.onsubmit = function(event) {
+    event.preventDefault();
 
+    if(queryText.value) {
+        loadFiveVideos();
+    }
+    else {
+        showSearchIsEmptyAlert();
+        return false;
+    }
+}
+
+moreVideosButton.style.display = "none";
+
+var hideNoVideoLabel = function() {
+    if(vidosFromSearchingData.length > 0) {
+        noVideosLabel.style.display = "none";
+    }
+};
+hideNoVideoLabel();
 
 document.getElementById("searchButton")
 .addEventListener('click', function(){
@@ -17,7 +39,16 @@ document.getElementById("searchButton")
 
 
 var loadFiveVideos = function(nextPageToken, needNewFiveVideos) {
-    var queryText = document.getElementById("searchInput").value;
+    hideNoVideoLabel();
+
+    if(!queryText.value) {
+        showSearchIsEmptyAlert();
+        return;
+    }
+
+    if(!needNewFiveVideos){
+        moreVideosButton.style.display = "block";
+    }
 
     if(vidosFromSearchingData.length > 0 && !needNewFiveVideos) {
         vidosFromSearchingData = [];
@@ -33,7 +64,7 @@ var loadFiveVideos = function(nextPageToken, needNewFiveVideos) {
         params = {
             part: part,
             maxResults: maxResults,
-            q: queryText,
+            q: queryText.value,
             key: key
         }
     if(nextPageToken) {
@@ -138,4 +169,8 @@ function loadMoreVideos() {
     }
 
     loadFiveVideos(nextPageToken, true);
+}
+
+function showSearchIsEmptyAlert() {
+    alert("Please something in a search input!");
 }

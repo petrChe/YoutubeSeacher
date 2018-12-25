@@ -43,7 +43,7 @@
                 <a class="nav-link" href="../pages/about.html">About</a>
               </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0" onsubmit="return false">
+        <form id="searchForm" class="form-inline my-2 my-lg-0">
           <input id= "searchInput" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
           <button id="searchButton" class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
         </form>
@@ -55,6 +55,7 @@
       <!-- Main jumbotron for a primary marketing message or call to action -->
       <div class="jumbotron">
         <div class="container">
+          <span id="noVideosLabel" class="label">There are no videos yet</span>
         </div>
       </div>
 
@@ -71,7 +72,6 @@
 
     <footer class="container">
       <p>&copy; Youtube Searcher petrChe</p>
-      <p><a href="https://icons8.com">Icon pack by Icons8</a></p>
     </footer>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
